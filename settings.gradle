@@ -1,0 +1,3 @@
+include ':BWReportLibrary'
+include ':app'
+rootProject.name = "BWReportProblem"
