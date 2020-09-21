@@ -8,14 +8,14 @@
     <string name="your_input">what went wrong?</string>
     <string name="send_feedback">Send</string>
     <string name="from" translatable="false">From:</string>
-    <string name="please_write">Please write something.</string>
+    <string name="please_add_des">Please add description about your issue</string>
     <string name="send_feedback_two">Send Feedback</string>
     <string name="feedback">Feedback</string>
     <string name="report_problem">Report a Problem</string>
     <string name="select_image">+ Add Screenshot</string>
     <string name="click_again">Click again to change the image</string>
     <string name="fail_to_get">fail to get image</string>
-    <string name="select_picture_title">Select Picture</string>
+    <string name="select_media_title">Select Media</string>
     <string name="ok">OK</string>
     <string name="system_info">System Info</string>
     <string name="info_fedback_legal_start">"Your "</string>
@@ -24,7 +24,35 @@
     <string name="info_fedback_legal_log_data">"log data "</string>
     <string name="info_fedback_legal_will_be_sent">will be sent to %s</string>
     <string name="space">" "</string>
-    <string name="add_image">Add Image</string>
+    <string name="add_media">Add Media</string>
     <string name="edit_image">Edit Image</string>
+
+
+    <string name="title_activity_photo_editor">PhotoEditorActivity</string>
+    <string name="done">Done</string>
+    <string name="save">Save</string>
+    <string name="clear_all">Clear All</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload_dialog_title">Upload Image</string>
+    <string name="upload_picker_title">Select Picture</string>
+    <string name="directory_create_fail">Failed to create directory</string>
+    <string name="access_media_permissions_msg">To attach photos, we need to access media on your device</string>
+    <string name="continue_txt">Continue</string>
+    <string name="not_now">NOT NOW</string>
+    <string name="media_access_denied_msg">You denied storage access, no photos will be added.</string>
+
+    <string name="ic_close">"\ue918"</string>
+    <string name="ic_text">"\ue945"</string>
+    <string name="ic_draw">""\ue944</string>
+    <string name="ic_images">"\ue949"</string>
+    <string name="ic_save">"\ue946"</string>
+    <string name="ic_clear_all">"\ue947"</string>
+    <string name="ic_continue">"\ue948"</string>
+    <string name="ic_delete">"\ue92c"</string>
+    <string name="choose_from_gallery">Choose From Gallery</string>
+    <string name="choose_from_camera">Choose From Camera</string>
+    <string name="undo">Undo</string>
+    <string name="erase">Erase</string>
 
 </resources>

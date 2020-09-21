@@ -15,13 +15,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
-            android:padding="5dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/edit_bg"
             android:gravity="top|start"
-            android:textSize="14sp"
             android:hint="@string/your_input"
-            android:minLines="4" />
+            android:minLines="4"
+            android:padding="5dp"
+            android:textSize="14sp" />
 
 
         <FrameLayout
@@ -41,6 +41,14 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/img_play_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_media_play"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/selectContainer"
@@ -93,39 +101,40 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@drawable/button_bg"
                     android:padding="10dp"
-                    android:src="@drawable/ic_edit_photo"
-                    android:background="@drawable/button_bg"/>
+                    android:src="@drawable/ic_edit_photo" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:text="@string/edit_image"
                     android:textColor="@android:color/black"
-                    android:text="@string/edit_image" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lnr_add_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_alignParentEnd="true"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@drawable/button_bg"
                     android:padding="10dp"
-                    android:src="@drawable/ic_album"
-                    android:background="@drawable/button_bg"/>
+                    android:src="@drawable/ic_album" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:text="@string/add_media"
                     android:textColor="@android:color/black"
-                    android:text="@string/add_image" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

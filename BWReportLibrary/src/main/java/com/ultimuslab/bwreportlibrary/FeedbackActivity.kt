@@ -2,6 +2,7 @@ package com.ultimuslab.bwreportlibrary
 
 import android.Manifest
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,14 +19,13 @@ import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
 import com.ultimuslab.*
 import com.ultimuslab.bwreportlibrary.components.DeviceInfo
 import com.ultimuslab.bwreportlibrary.components.SystemLog
@@ -37,7 +37,6 @@ import kotlinx.android.synthetic.main.feedback_layout.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import java.io.*
@@ -49,12 +48,11 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
         private set
     private val REQUEST_APP_SETTINGS = 321
     private val REQUEST_PERMISSIONS = 123
+    private val EDITED_IMAGE_CODE = 152
     private var deviceInfo: String? = null
     private var withInfo = false
-    private val PICK_IMAGE_REQUEST = 125
+    private val PICK_MEDIA_REQUEST = 125
     private var realPath: String? = null
-    private var selectedImageView: ImageView? = null
-    private var selectContainer: LinearLayout? = null
     private lateinit var api: RetrofitApiMutipart
 
     companion object {
@@ -73,8 +71,6 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
         api = RetrofitApiMutipart.createMultipart()
 
         val info = findViewById<View>(R.id.info_legal) as TextView
-        selectedImageView = findViewById<View>(R.id.selectedImageView) as ImageView
-        selectContainer = findViewById<View>(R.id.selectContainer) as LinearLayout
         submitSuggestion.setOnClickListener(this)
         lnr_add_image.setOnClickListener(this)
         lnr_edit_image.setOnClickListener(this)
@@ -123,11 +119,16 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
 
 
     fun editImage(realPath: String) {
-        ImageEditor.Builder(this, realPath)
-            .setStickerAssets("stickers")
-            .disable(EDITOR_FILTERS)
-            .disable(EDITOR_STICKER)
-            .open()
+
+        val intent = Intent(this, PhotoEditorActivity::class.java)
+        intent.putExtra("selectedImagePath", realPath)
+        startActivityForResult(intent, EDITED_IMAGE_CODE)
+
+//        ImageEditor.Builder(this, realPath)
+////            .setStickerAssets("stickers")
+//            .disable(EDITOR_FILTERS)
+//            .disable(EDITOR_STICKER)
+//            .open()
     }
 
     fun selectImage() {
@@ -151,13 +152,13 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     private fun selectPicture() {
         realPath = null
         val intent = Intent()
-        intent.type = "image/*"
+        intent.type = "image/* video/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(
             Intent.createChooser(
                 intent,
-                getString(R.string.select_picture_title)
-            ), PICK_IMAGE_REQUEST
+                getString(R.string.select_media_title)
+            ), PICK_MEDIA_REQUEST
         )
     }
 
@@ -168,6 +169,14 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
             .setNegativeButton(R.string.cancel, null)
             .create()
             .show()
+    }
+
+    private fun showProgressDialog(message: String) {
+        val progress = ProgressDialog(this)
+        progress.setMessage(message)
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        progress.isIndeterminate = true
+        progress.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -202,47 +211,75 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             REQUEST_APP_SETTINGS -> {
-                if (hasPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (hasPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                ) {
 
                     //Toast.makeText(this, "All permissions granted!", Toast.LENGTH_SHORT).show();
                     selectPicture()
                 } else {
-                    showMessageOKCancel("You need to allow access to SD card to select images.",
+                    showMessageOKCancel("You need to allow access to Storage permission to select images.",
                         DialogInterface.OnClickListener { dialog, which -> goToSettings() })
                 }
             }
 
-            PICK_IMAGE_REQUEST -> {
+            PICK_MEDIA_REQUEST -> {
                 if (resultCode == RESULT_OK && data != null && data.data != null) {
                     data.data?.let {
                         realPath = Utils.getPath(this, it)
-                        selectedImageView!!.setImageBitmap(
-                            Utils.decodeSampledBitmap(
-                                realPath,
-                                selectedImageView!!.width, selectedImageView!!.height
+
+                        if (realPath?.endsWith(".mp4", true) == true) {
+                            lnr_edit_image.visibility = View.GONE
+                            img_play_button.visibility = View.VISIBLE
+                            Glide.with(this).load(realPath).into(selectedImageView)
+                        } else {
+                            lnr_edit_image.visibility = View.VISIBLE
+                            img_play_button.visibility = View.GONE
+
+                            selectedImageView.setImageBitmap(
+                                Utils.decodeSampledBitmap(
+                                    realPath,
+                                    selectedImageView.width, selectedImageView.height
+                                )
                             )
-                        )
-                        selectContainer!!.visibility = View.GONE
-//                Toast.makeText(this, getString(R.string.click_again), Toast.LENGTH_SHORT).show()
+                        }
+
                     }
 
                 }
             }
 
-            ImageEditor.RC_IMAGE_EDITOR -> {
+//            ImageEditor.RC_IMAGE_EDITOR -> {
+//                if (resultCode == Activity.RESULT_OK && data != null) {
+//                    realPath = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
+//                    if (realPath.isNullOrEmpty()) {
+//                        Toast.makeText(this, getString(R.string.fail_to_get), Toast.LENGTH_SHORT)
+//                            .show()
+//
+//                    } else {
+//                        selectedImageView.setImageBitmap(
+//                            BitmapFactory.decodeFile(realPath)
+//                        )
+//                    }
+//
+//                }
+//            }
+
+            EDITED_IMAGE_CODE -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    realPath = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
+                    realPath = data.getStringExtra("imagePath")
                     if (realPath.isNullOrEmpty()) {
                         Toast.makeText(this, getString(R.string.fail_to_get), Toast.LENGTH_SHORT)
                             .show()
-
                     } else {
-                        selectedImageView!!.setImageBitmap(
-                            BitmapFactory.decodeFile(realPath)
-                        )
+                        selectedImageView.setImageBitmap(BitmapFactory.decodeFile(realPath))
+//                        Glide.with(this).load(realPath).into(selectedImageView)
                     }
 
                 }
+
             }
 
         }
@@ -298,6 +335,8 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun sendReport() {
+
+        showProgressDialog("Process...")
 
         if (realPath.isNullOrEmpty()) {
             createIssueAPiCall("")
@@ -357,12 +396,18 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun createIssueAPiCall(tokenForImage: String) {
+        var file_name = "issue.jpg"
+        var content_type = "image/jpg"
+        if (realPath?.endsWith(".mp4", true) == true) {
+            file_name = "issue.mp4"
+            content_type = "video/mp4"
+        }
 
         var issueCreator = RedmineIssueCreator(
             Issue(
                 appLabel.orEmpty(),
                 editText.text.toString(),
-                arrayListOf(MediaRedmine(tokenForImage, "test.jpg", "image/jpg"))
+                arrayListOf(MediaRedmine(tokenForImage, file_name, content_type))
             )
         )
 
@@ -433,13 +478,13 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
 //                    sendEmail(suggestion)
                     sendReport()
 //                    finish()
-                } else editText.error = getString(R.string.please_write)
+                } else editText.error = getString(R.string.please_add_des)
             }
             R.id.lnr_edit_image -> {
                 if (realPath.isNullOrEmpty()) {
                     Toast.makeText(
                         this,
-                        getString(R.string.select_picture_title),
+                        getString(R.string.select_media_title),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {

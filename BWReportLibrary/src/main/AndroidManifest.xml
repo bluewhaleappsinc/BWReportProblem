@@ -2,6 +2,7 @@
     package="com.ultimuslab.bwreportlibrary">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,6 +20,12 @@
             android:name="com.ultimuslab.imageeditengine.ImageEditActivity"
             android:theme="@style/LibAppTheme"
             android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".PhotoEditorActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_photo_editor"
+            android:theme="@style/LibAppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
