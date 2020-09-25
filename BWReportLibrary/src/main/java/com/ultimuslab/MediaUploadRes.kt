@@ -7,6 +7,8 @@ class RedmineIssueCreator(
 class Issue(
     val project_id: String,
     val subject: String,
+    val description: String,
+    val fixed_version_id: String,
     val uploads: ArrayList<MediaRedmine>
 
 )
@@ -20,10 +22,10 @@ class MediaRedmine(
 )
 
 class UploadRes(
-   val upload : UploadData
+    val upload: UploadData
 )
 
 class UploadData(
-    val id : Int,
-    val token : String
+    val id: Int,
+    val token: String
 )

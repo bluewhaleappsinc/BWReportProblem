@@ -45,7 +45,10 @@ import java.util.*
 class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     var LOG_TO_STRING = SystemLog.extractLogToString()
     var appLabel: String? = null
-        private set
+    var fixedVersionName: String? = null
+    var userName: String? = null
+    var buildVesrion: String? = null
+    var enviroment: String? = null
     private val REQUEST_APP_SETTINGS = 321
     private val REQUEST_PERMISSIONS = 123
     private val EDITED_IMAGE_CODE = 152
@@ -58,6 +61,10 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         const val KEY_WITH_INFO = "with_info"
         const val KEY_PROJECT_NAME = "project_name"
+        const val KEY_FIXED_VER_ID = "fixed_version_id"
+        const val KEY_USER_NAME = "user_name"
+        const val KEY_BUILD_VERSION = "build_version"
+        const val KEY_ENVIROMENT = "enviroment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +82,17 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
         lnr_add_image.setOnClickListener(this)
         lnr_edit_image.setOnClickListener(this)
         appLabel = intent.getStringExtra(KEY_PROJECT_NAME)
+        fixedVersionName = intent.getStringExtra(KEY_FIXED_VER_ID)
+        userName = intent.getStringExtra(KEY_USER_NAME)
+        buildVesrion = intent.getStringExtra(KEY_BUILD_VERSION)
+        enviroment = intent.getStringExtra(KEY_ENVIROMENT)
         withInfo = intent.getBooleanExtra(KEY_WITH_INFO, false)
-        deviceInfo = DeviceInfo.getAllDeviceInfo(this, false)
+        deviceInfo = DeviceInfo.getAllDeviceInfo(
+            this,
+            userName.orEmpty(),
+            buildVesrion ?: "0",
+            enviroment.orEmpty()
+        )
         if (withInfo) {
             val infoFeedbackStart: CharSequence =
                 resources.getString(R.string.info_fedback_legal_start)
@@ -406,7 +422,9 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
         var issueCreator = RedmineIssueCreator(
             Issue(
                 appLabel.orEmpty(),
-                editText.text.toString(),
+                editHeader.text.toString(),
+                "${editText.text.toString()} $deviceInfo",
+                fixedVersionName.orEmpty(),
                 arrayListOf(MediaRedmine(tokenForImage, file_name, content_type))
             )
         )
@@ -473,12 +491,12 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
 
         when (view.id) {
             R.id.submitSuggestion -> {
-                val suggestion = editText.text.toString()
+                val suggestion = editHeader.text.toString()
                 if (suggestion.trim { it <= ' ' }.isNotEmpty()) {
 //                    sendEmail(suggestion)
                     sendReport()
 //                    finish()
-                } else editText.error = getString(R.string.please_add_des)
+                } else editHeader.error = getString(R.string.please_add_header)
             }
             R.id.lnr_edit_image -> {
                 if (realPath.isNullOrEmpty()) {

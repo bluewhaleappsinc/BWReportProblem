@@ -9,6 +9,7 @@
     <string name="send_feedback">Send</string>
     <string name="from" translatable="false">From:</string>
     <string name="please_add_des">Please add description about your issue</string>
+    <string name="please_add_header">Please add subject about your issue</string>
     <string name="send_feedback_two">Send Feedback</string>
     <string name="feedback">Feedback</string>
     <string name="report_problem">Report a Problem</string>
@@ -54,5 +55,6 @@
     <string name="choose_from_camera">Choose From Camera</string>
     <string name="undo">Undo</string>
     <string name="erase">Erase</string>
+    <string name="enter_your_subject">Enter your subject</string>
 
 </resources>

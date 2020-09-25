@@ -12,8 +12,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
-            IssueTracker.Builder(this)
-                .withProjectName("test-project")
+            IssueTracker.Builder(this, "test-project", "158")
+                .withUserName("Mayur")
+                .withEnviroment("staging")
+                .withBuildVesion("${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})")
 //                .withSystemInfo()
                 .build()
                 .start()
