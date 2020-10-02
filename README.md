@@ -3,7 +3,7 @@
 
 ## Version
 
- 1.0.0
+  0.0.1
 
 
 
@@ -24,7 +24,7 @@ Step 2. Add the dependency, Include this in your Module-level build.gradle file
 
 ```kotlin
 dependencies {
-	        implementation 'com.github.socialUltimus:Social_Login:0.0.1'
+	           implementation 'com.github.bluewhaleappsinc:BWReportProblem:0.0.1'
 	}
 ```
 
@@ -33,14 +33,36 @@ dependencies {
 
 ```kotlin
     button.setOnClickListener {
-            IssueTracker.Builder(this)
-                .withProjectName("test-project") // project id/name
-                .build()
-                .start()
+
+      IssueTracker.Builder(this, "test-project", "158")  // project id/name
+                    .withUserName("userName")
+                    .withEnviroment("staging")
+                    .withBuildVesion("${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})")
+                    .build()
+                    .start()
 
         }
 
 ```
 
+## ISSUE?
+
+If you facing manifest merge issue related
+
+```
+        <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+
+```
+
+use tools:replace="android:resource" in your main project
+```
+     <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"
+                tools:replace="android:resource" />
+
+```
 
 
