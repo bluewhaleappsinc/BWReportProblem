@@ -412,10 +412,10 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun createIssueAPiCall(tokenForImage: String) {
-        var file_name = "issue.jpg"
+        var file_name = "attachment.jpg"
         var content_type = "image/jpg"
         if (realPath?.endsWith(".mp4", true) == true) {
-            file_name = "issue.mp4"
+            file_name = "attachment.mp4"
             content_type = "video/mp4"
         }
 

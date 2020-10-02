@@ -22,6 +22,8 @@
             android:maxLines="1"
             android:padding="5dp"
             android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/gray"
             android:textSize="14sp" />
 
         <EditText
@@ -36,6 +38,8 @@
             android:hint="@string/your_input"
             android:minLines="4"
             android:padding="5dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/gray"
             android:textSize="14sp" />
 
 
@@ -160,7 +164,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:text="@string/send_feedback" />
+            android:text="@string/send_feedback"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
