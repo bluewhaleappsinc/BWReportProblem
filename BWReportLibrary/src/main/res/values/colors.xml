@@ -11,6 +11,7 @@
         <item>#000000</item>
     </array>
     <color name="gray">#737171</color>
+    <color name="light_gray">#9F9F9F</color>
     <color name="white">#ffffff</color>
     <color name="transparent_black">#a34b4949</color>
     <color name="blackish">#2d2c2c</color>
