@@ -3,7 +3,7 @@
 
 ## Version
 
-  0.0.1
+  0.0.4
 
 
 
@@ -24,7 +24,7 @@ Step 2. Add the dependency, Include this in your Module-level build.gradle file
 
 ```kotlin
 dependencies {
-	           implementation 'com.github.bluewhaleappsinc:BWReportProblem:0.0.1'
+	           implementation 'com.github.bluewhaleappsinc:BWReportProblem:0.0.4'
 	}
 ```
 
