@@ -165,19 +165,20 @@ public class PhotoEditorActivity extends AppCompatActivity implements View.OnCli
         clearAllTextTextView.setOnClickListener(this);
         goToNextTextView.setOnClickListener(this);
 
+
         colorPickerColors = new ArrayList<>();
         colorPickerColors.add(getResources().getColor(R.color.black));
-//        colorPickerColors.add(getResources().getColor(R.color.blue_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.brown_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.green_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.orange_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.blue_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.brown_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.green_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.orange_color_picker));
         colorPickerColors.add(getResources().getColor(R.color.red_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.red_orange_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.sky_blue_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.violet_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.white));
-//        colorPickerColors.add(getResources().getColor(R.color.yellow_color_picker));
-//        colorPickerColors.add(getResources().getColor(R.color.yellow_green_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.red_orange_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.sky_blue_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.violet_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.white));
+        colorPickerColors.add(getResources().getColor(R.color.yellow_color_picker));
+        colorPickerColors.add(getResources().getColor(R.color.yellow_green_color_picker));
 
         new CountDownTimer(500, 100) {
 

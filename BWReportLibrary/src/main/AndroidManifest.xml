@@ -11,11 +11,14 @@
 
     <application
         android:allowBackup="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        >
 
         <activity
             android:name=".FeedbackActivity"
-            android:label="@string/report_problem" />
+            android:label="@string/report_problem"
+            android:theme="@style/LibAppTheme"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <activity
             android:name="com.ultimuslab.imageeditengine.ImageEditActivity"
@@ -25,7 +28,8 @@
             android:name=".PhotoEditorActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_photo_editor"
-            android:theme="@style/LibAppTheme.NoActionBar"
+            android:theme="@style/LibAppTheme"
+
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <provider

@@ -70,7 +70,7 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feedback_layout)
-        if (supportActionBar != null) supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         init()
     }
 
@@ -81,6 +81,7 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
         submitSuggestion.setOnClickListener(this)
         lnr_add_image.setOnClickListener(this)
         lnr_edit_image.setOnClickListener(this)
+        img_back.setOnClickListener(this)
         appLabel = intent.getStringExtra(KEY_PROJECT_NAME)
         fixedVersionName = intent.getStringExtra(KEY_FIXED_VER_ID)
         userName = intent.getStringExtra(KEY_USER_NAME)
@@ -512,6 +513,10 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.lnr_add_image -> {
                 selectImage()
+            }
+
+            R.id.img_back ->{
+                onBackPressed()
             }
         }
 
