@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import com.ultimuslab.ImageFragment;
 import com.ultimuslab.bwreportlibrary.widget.SlidingUpPanelLayout;
 import com.viewpagerindicator.PageIndicator;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -218,7 +220,10 @@ public class PhotoEditorActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void clearAllViews() {
-        photoEditorSDK.clearAllViews();
+        try {
+            photoEditorSDK.clearAllViews();
+        } catch (Exception e) {
+        }
     }
 
     private void undoViews() {
@@ -239,6 +244,8 @@ public class PhotoEditorActivity extends AppCompatActivity implements View.OnCli
         LinearLayoutManager layoutManager = new LinearLayoutManager(PhotoEditorActivity.this, LinearLayoutManager.HORIZONTAL, false);
         addTextColorPickerRecyclerView.setLayoutManager(layoutManager);
         addTextColorPickerRecyclerView.setHasFixedSize(true);
+        addTextEditText.setTextColor(colorCode);
+
         ColorPickerAdapter colorPickerAdapter = new ColorPickerAdapter(PhotoEditorActivity.this, colorPickerColors);
         colorPickerAdapter.setOnColorPickerClickListener(new ColorPickerAdapter.OnColorPickerClickListener() {
             @Override
@@ -317,11 +324,16 @@ public class PhotoEditorActivity extends AppCompatActivity implements View.OnCli
             }
 
             public void onFinish() {
+                String folderName = "PhotoEditorSDK";
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageName = "IMG_" + timeStamp + ".jpg";
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("imagePath", photoEditorSDK.saveImage("PhotoEditorSDK", imageName));
+
+                String path = photoEditorSDK.saveImage(folderName, imageName);
+                returnIntent.putExtra("imagePath", path);
                 setResult(Activity.RESULT_OK, returnIntent);
+
+//                Log.e("==>imagePath","===>during save"+path);
                 finish();
             }
         }.start();
@@ -334,7 +346,7 @@ public class PhotoEditorActivity extends AppCompatActivity implements View.OnCli
         } else if (v.getId() == R.id.add_image_emoji_tv) {
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         } else if (v.getId() == R.id.add_text_tv) {
-            openAddTextPopupWindow("", -1);
+            openAddTextPopupWindow("", colorPickerColors.get(5));
         } else if (v.getId() == R.id.add_pencil_tv) {
             updateBrushDrawingView(true);
         } else if (v.getId() == R.id.done_drawing_tv) {

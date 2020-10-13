@@ -30,9 +30,6 @@ import com.ultimuslab.*
 import com.ultimuslab.bwreportlibrary.components.DeviceInfo
 import com.ultimuslab.bwreportlibrary.components.SystemLog
 import com.ultimuslab.bwreportlibrary.components.Utils
-import com.ultimuslab.imageeditengine.ImageEditor
-import com.ultimuslab.imageeditengine.ImageEditor.EDITOR_FILTERS
-import com.ultimuslab.imageeditengine.ImageEditor.EDITOR_STICKER
 import kotlinx.android.synthetic.main.feedback_layout.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -150,11 +147,14 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
 
     fun selectImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val hasWriteContactsPermission =
-                checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            ) {
                 requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
                     REQUEST_PERMISSIONS
                 )
                 return
@@ -287,6 +287,9 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
             EDITED_IMAGE_CODE -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     realPath = data.getStringExtra("imagePath")
+
+//                    Log.e("==>imagePath", "===>after save$realPath")
+
                     if (realPath.isNullOrEmpty()) {
                         Toast.makeText(this, getString(R.string.fail_to_get), Toast.LENGTH_SHORT)
                             .show()
@@ -515,7 +518,7 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
                 selectImage()
             }
 
-            R.id.img_back ->{
+            R.id.img_back -> {
                 onBackPressed()
             }
         }
