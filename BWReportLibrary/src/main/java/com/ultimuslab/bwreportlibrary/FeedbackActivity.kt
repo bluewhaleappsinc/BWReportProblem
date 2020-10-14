@@ -54,6 +54,7 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     private val PICK_MEDIA_REQUEST = 125
     private var realPath: String? = null
     private lateinit var api: RetrofitApiMutipart
+    private var progress: ProgressDialog? = null
 
     companion object {
         const val KEY_WITH_INFO = "with_info"
@@ -189,11 +190,15 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showProgressDialog(message: String) {
-        val progress = ProgressDialog(this)
-        progress.setMessage(message)
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        progress.isIndeterminate = true
-        progress.show()
+        progress = ProgressDialog(this)
+        progress?.setMessage(message)
+        progress?.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        progress?.isIndeterminate = true
+        progress?.show()
+    }
+
+    private fun hideProgressDialog() {
+        progress?.hide()
     }
 
     override fun onRequestPermissionsResult(
@@ -384,7 +389,7 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
                 api.uploadMediaToRedmine(requestBody)
                     ?.enqueue(object : Callback<UploadRes> {
                         override fun onFailure(call: Call<UploadRes>, t: Throwable) {
-
+                            hideProgressDialog()
                             Log.e("==>", "===>>>" + t)
                         }
 
@@ -399,6 +404,8 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
                                 createIssueAPiCall(token)
 
                             } else {
+                                hideProgressDialog()
+
                                 Toast.makeText(
                                     this@FeedbackActivity,
                                     "Fail to upload",
@@ -438,6 +445,8 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
 
                     Log.e("==>", "===>>>" + t)
+                    hideProgressDialog()
+
                 }
 
                 override fun onResponse(
@@ -451,9 +460,12 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener {
                             "Successfully Submitted",
                             Toast.LENGTH_SHORT
                         ).show()
+                        hideProgressDialog()
 
                         finish()
                     } else {
+                        hideProgressDialog()
+
                         Toast.makeText(
                             this@FeedbackActivity,
                             "Fail to submit",
